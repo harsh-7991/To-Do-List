@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="{{ url_for('static', filename = 'image/favicon.png') }}" type="image/png">
+
+        <title>Dashboard</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/dark_light.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/dark_light.js') }}"></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/dashboard.css') }}">
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/dashboard.js') }}"></script>
+    </head>
+
+    <body id="" class="">
+
+        <svg id="svg_icon" aria-hidden="true" style="display:none; position: absolute; width: 0; height: 0; overflow: hidden;">
+            <defs>
+                <symbol id="icon-check" viewBox="0 0 24 24">
+                    <path d="M19.293 5.293l-10.293 10.293-4.293-4.293c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414l5 5c0.391 0.391 1.024 0.391 1.414 0l11-11c0.391-0.391 0.391-1.024 0-1.414s-1.024-0.391-1.414 0z">
+                    </path>
+                </symbol>
+                <symbol id="icon-edit" viewBox="0 0 24 24">
+                    <path d="M11 3h-7c-0.828 0-1.58 0.337-2.121 0.879s-0.879 1.293-0.879 2.121v14c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h14c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-7c0-0.552-0.448-1-1-1s-1 0.448-1 1v7c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-14c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-14c0-0.276 0.111-0.525 0.293-0.707s0.431-0.293 0.707-0.293h7c0.552 0 1-0.448 1-1s-0.448-1-1-1zM17.793 1.793l-9.5 9.5c-0.122 0.121-0.217 0.28-0.263 0.465l-1 4c-0.039 0.15-0.042 0.318 0 0.485 0.134 0.536 0.677 0.862 1.213 0.728l4-1c0.167-0.041 0.33-0.129 0.465-0.263l9.5-9.5c0.609-0.609 0.914-1.41 0.914-2.207s-0.305-1.598-0.914-2.207-1.411-0.915-2.208-0.915-1.598 0.305-2.207 0.914zM19.207 3.207c0.219-0.219 0.504-0.328 0.793-0.328s0.574 0.109 0.793 0.328 0.328 0.504 0.328 0.793-0.109 0.574-0.328 0.793l-9.304 9.304-2.114 0.529 0.529-2.114z">
+                    </path>
+                </symbol>
+                <symbol id="icon-home" viewBox="0 0 24 24">
+                    <path d="M2.386 8.211c-0.236 0.184-0.386 0.469-0.386 0.789v11c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h14c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-11c-0.001-0.3-0.134-0.593-0.386-0.789l-9-7c-0.358-0.275-0.861-0.285-1.228 0zM16 21v-9c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v9h-3c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-10.511l8-6.222 8 6.222v10.511c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293zM10 21v-8h4v8z">
+                    </path>
+                </symbol>
+                <symbol id="icon-layers" viewBox="0 0 24 24">
+                    <path d="M12 3.118l7.764 3.882-7.764 3.882-7.764-3.882zM11.553 1.106l-10 5c-0.494 0.247-0.694 0.847-0.447 1.341 0.101 0.203 0.261 0.356 0.447 0.447l10 5c0.292 0.146 0.62 0.136 0.894 0l10-5c0.494-0.247 0.694-0.848 0.447-1.342-0.101-0.202-0.262-0.355-0.447-0.447l-10-5c-0.292-0.146-0.62-0.136-0.894 0zM1.553 17.894l10 5c0.292 0.146 0.62 0.136 0.894 0l10-5c0.494-0.247 0.694-0.848 0.447-1.342s-0.848-0.694-1.342-0.447l-9.552 4.777-9.553-4.776c-0.494-0.247-1.095-0.047-1.342 0.447s-0.047 1.095 0.447 1.342zM1.553 12.894l10 5c0.292 0.146 0.62 0.136 0.894 0l10-5c0.494-0.247 0.694-0.848 0.447-1.342s-0.848-0.694-1.342-0.447l-9.552 4.777-9.553-4.776c-0.494-0.247-1.095-0.047-1.342 0.447s-0.047 1.095 0.447 1.342z"></path>
+                </symbol>
+                <symbol id="icon-list" viewBox="0 0 24 24">
+                    <path d="M8 7h13c0.552 0 1-0.448 1-1s-0.448-1-1-1h-13c-0.552 0-1 0.448-1 1s0.448 1 1 1zM8 13h13c0.552 0 1-0.448 1-1s-0.448-1-1-1h-13c-0.552 0-1 0.448-1 1s0.448 1 1 1zM8 19h13c0.552 0 1-0.448 1-1s-0.448-1-1-1h-13c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7c0.552 0 1-0.448 1-1s-0.448-1-1-1-1 0.448-1 1 0.448 1 1 1zM3 13c0.552 0 1-0.448 1-1s-0.448-1-1-1-1 0.448-1 1 0.448 1 1 1zM3 19c0.552 0 1-0.448 1-1s-0.448-1-1-1-1 0.448-1 1 0.448 1 1 1z"></path>
+                </symbol>
+                <symbol id="icon-loading-spinner" viewBox="0 0 32 32">
+                    <path d="M16 32c-4.274 0-8.292-1.664-11.314-4.686s-4.686-7.040-4.686-11.314c0-3.026 0.849-5.973 2.456-8.522 1.563-2.478 3.771-4.48 6.386-5.791l1.344 2.682c-2.126 1.065-3.922 2.693-5.192 4.708-1.305 2.069-1.994 4.462-1.994 6.922 0 7.168 5.832 13 13 13s13-5.832 13-13c0-2.459-0.69-4.853-1.994-6.922-1.271-2.015-3.066-3.643-5.192-4.708l1.344-2.682c2.615 1.31 4.824 3.313 6.386 5.791 1.607 2.549 2.456 5.495 2.456 8.522 0 4.274-1.664 8.292-4.686 11.314s-7.040 4.686-11.314 4.686z"></path>
+                </symbol>
+                <symbol id="icon-log-in" viewBox="0 0 24 24">
+                    <path d="M15 4h4c0.276 0 0.525 0.111 0.707 0.293s0.293 0.431 0.293 0.707v14c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-4c-0.552 0-1 0.448-1 1s0.448 1 1 1h4c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-14c0-0.828-0.337-1.58-0.879-2.121s-1.293-0.879-2.121-0.879h-4c-0.552 0-1 0.448-1 1s0.448 1 1 1zM12.586 11h-9.586c-0.552 0-1 0.448-1 1s0.448 1 1 1h9.586l-3.293 3.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5-5c0.096-0.096 0.168-0.206 0.217-0.324s0.076-0.247 0.076-0.383c0-0.13-0.025-0.261-0.076-0.383-0.049-0.118-0.121-0.228-0.217-0.324l-5-5c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z">
+                    </path>
+                </symbol>
+                <symbol id="icon-log-out" viewBox="0 0 24 24">
+                    <path d="M9 20h-4c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-14c0-0.276 0.111-0.525 0.293-0.707s0.431-0.293 0.707-0.293h4c0.552 0 1-0.448 1-1s-0.448-1-1-1h-4c-0.828 0-1.58 0.337-2.121 0.879s-0.879 1.293-0.879 2.121v14c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h4c0.552 0 1-0.448 1-1s-0.448-1-1-1zM18.586 11h-9.586c-0.552 0-1 0.448-1 1s0.448 1 1 1h9.586l-3.293 3.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5-5c0.092-0.092 0.166-0.202 0.217-0.324 0.15-0.362 0.078-0.795-0.217-1.090l-5-5c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z">
+                    </path>
+                </symbol>
+                <symbol id="icon-menu" viewBox="0 0 24 24">
+                    <path d="M3 13h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 19h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1z">
+                    </path>
+                </symbol>
+                <symbol id="icon-plus" viewBox="0 0 24 24">
+                    <path d="M5 13h6v6c0 0.552 0.448 1 1 1s1-0.448 1-1v-6h6c0.552 0 1-0.448 1-1s-0.448-1-1-1h-6v-6c0-0.552-0.448-1-1-1s-1 0.448-1 1v6h-6c-0.552 0-1 0.448-1 1s0.448 1 1 1z">
+                    </path>
+                </symbol>
+                <symbol id="icon-search" viewBox="0 0 24 24">
+                    <path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z">
+                    </path>
+                </symbol>
+                <symbol id="icon-save" viewBox="0 0 24 24">
+                    <path d="M19 22c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-11c0-0.256-0.098-0.512-0.293-0.707l-5-5c-0.181-0.181-0.431-0.293-0.707-0.293h-11c-0.828 0-1.58 0.337-2.121 0.879s-0.879 1.293-0.879 2.121v14c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879zM8 20v-6h8v6zM6 4v4c0 0.552 0.448 1 1 1h8c0.552 0 1-0.448 1-1s-0.448-1-1-1h-7v-3h7.586l4.414 4.414v10.586c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-1v-7c0-0.552-0.448-1-1-1h-10c-0.552 0-1 0.448-1 1v7h-1c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-14c0-0.276 0.111-0.525 0.293-0.707s0.431-0.293 0.707-0.293z">
+                    </path>
+                </symbol>
+                <symbol id="icon-trash-2" viewBox="0 0 24 24">
+                    <path d="M18 7v13c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-10c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-13zM17 5v-1c0-0.828-0.337-1.58-0.879-2.121s-1.293-0.879-2.121-0.879h-4c-0.828 0-1.58 0.337-2.121 0.879s-0.879 1.293-0.879 2.121v1h-4c-0.552 0-1 0.448-1 1s0.448 1 1 1h1v13c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h10c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-13h1c0.552 0 1-0.448 1-1s-0.448-1-1-1zM9 5v-1c0-0.276 0.111-0.525 0.293-0.707s0.431-0.293 0.707-0.293h4c0.276 0 0.525 0.111 0.707 0.293s0.293 0.431 0.293 0.707v1zM9 11v6c0 0.552 0.448 1 1 1s1-0.448 1-1v-6c0-0.552-0.448-1-1-1s-1 0.448-1 1zM13 11v6c0 0.552 0.448 1 1 1s1-0.448 1-1v-6c0-0.552-0.448-1-1-1s-1 0.448-1 1z">
+                    </path>
+                </symbol>
+                <symbol id="icon-x" viewBox="0 0 24 24">
+                    <path d="M5.293 6.707l5.293 5.293-5.293 5.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5.293-5.293 5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414l-5.293-5.293 5.293-5.293c0.391-0.391 0.391-1.024 0-1.414s-1.024-0.391-1.414 0l-5.293 5.293-5.293-5.293c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z">
+                    </path>
+                </symbol>
+                <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z">
+                    </path>
+                    <path
+                        d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z">
+                    </path>
+                </symbol>
+                <symbol id="sun-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z">
+                    </path>
+                </symbol>
+            </defs>
+        </svg>
+
+        <div id="div_nav_side_menu" class="div_nav_side_menu">
+
+            <div id="div_nav_bar" class="div_nav_bar">
+
+                <div class="div_nav_bar_logo" id="div_nav_bar_logo">
+
+                    <div>
+                        <button id="btn_left_side_nav_bar" class="btn_icon1" title="Side Menu">
+                            <div class="div_btn_icon1_cont">
+                                <svg class="icon_svg">
+                                    <use xlink:href="#icon-menu"></use>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="div_breadcrumb_container">
+
+                        <a class="a_logo_text_link" href="/dashboard" title="Dashboard">
+                            <button class="btn_icon2">
+                                <div class="div_btn_icon2_cont">
+                                    <svg class="icon_svg">
+                                        <use xlink:href="#icon-home"></use>
+                                    </svg>
+                                    <span class="btn_icon2_sp_text">Dashboard</span>
+                                </div>
+                            </button>
+                        </a>
+                        <span class="spn_breadcrumb_divider">/</span>
+                        <span id="spn_tab_name_navbar" class="spn_breadcrumb_item"></span>
+
+
+                    </div>
+
+
+                </div>
+
+                <div class="" id="div_theme_btn_cont">
+                    <div id="div_day_night_mode" class="div_day_night_mode_nav" style="background-color: rgb(0, 0, 0);">
+                        <button id="day_night_mode_btn" class="day_night_mode_btn" title="Change Between Day and Night Mode" data-day-night-mode="night">
+                        <div id="div_day_mode" class="div_day_mode" style="display: flex;">
+                            <svg class="day_icon_svg"><use href="#sun-fill"></use></svg>
+                        </div>
+
+                        <div id="div_night_mode" class="div_night_mode" style="display: none;">
+                            <svg class="night_icon_svg"><use href="#moon-stars-fill"></use></svg>
+                        </div>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="div_side_menu" class="div_side_menu">
+
+                <div class="div_user_name_dp" id="div_user_name_dp">
+
+                    <a class="a_user_name_dp" id="a_user_name_dp" title="User Profile" href="/dashboard?tab=profile">
+                        <div class="div_user_dp" id="div_user_dp">
+                            <img class="img_user_dp" id="img_user_dp" src="{{ url_for('static', filename = 'user_img/'+data[6]) }}"/>
+                        </div>
+                        <div class="div_user_name" id="div_user_name">
+                            <span class="spn_user_name" id="spn_user_name">{{ data[1] +" "+ data[2] }}</span>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="div_tab_link_list_profile_links" id="div_tab_link_list_profile_links">
+
+                    <li class="li_tab_link" id="li_tab_link_profile_edit">
+                        <a class="a_tab_link" id="a_tab_link_profie_edit" title="Edit Profile" href="/dashboard?tab=profile_edit">
+                            <div class="div_tab_link_icon_spn">
+                                <svg class="icon_svg">
+                                    <use xlink:href="#icon-edit"></use>
+                                </svg>
+                                <span class="spn_div_tab_link">Profile Edit</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="li_tab_link_logout" id="li_tab_link_logout">
+                        <a class="a_tab_link" id="a_tab_link_logout" title="Logout" href="/logout">
+                            <div class="div_tab_link_icon_spn">
+                                <svg class="icon_svg">
+                                    <use xlink:href="#icon-log-out"></use>
+                                </svg>
+                                <span class="spn_div_tab_link">Logout</span>
+                            </div>
+                        </a>
+                    </li>
+
+                </div>
+
+                <div class="div_line_divider" id=""></div>
+
+
+                <div class="div_tab_link_list" id="div_tab_link_list">
+
+                    <li class="li_tab_link" id="li_tab_link_task">
+                        <a class="a_tab_link" id="a_tab_link_task" title="View Task" href="/dashboard?tab=task_list">
+                            <div class="div_tab_link_icon_spn">
+                                <svg class="icon_svg">
+                                    <use xlink:href="#icon-list"></use>
+                                </svg>
+                                <span class="spn_div_tab_link">Task</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="li_tab_link" id="li_tab_link_history">
+                        <a class="a_tab_link" id="a_tab_link_history" title="View History" href="/dashboard?tab=history">
+                            <div class="div_tab_link_icon_spn">
+                                <svg class="icon_svg">
+                                    <use xlink:href="#icon-layers"></use>
+                                </svg>
+                                <span class="spn_div_tab_link">History</span>
+                            </div>
+                        </a>
+                    </li>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+
+        <!-- Add Task Pop Up -->
+        <div class="modal fade" id="div_add_task_popup" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered .modal-sm">
+              <div class="modal-content">
+                <div class="modal-header px-3 p-2">
+                  <h5 class="modal-title">Add New Task</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-2 p-2">
+
+
+                    <form action="/add_task" method="post" class="form-control" enctype="multipart/form-data">
+
+                        <label for="task_title">Task Title :</label>
+                        <input class="form-control mb-2" id="task_title" name="task_title" type="text" placeholder="Enter Task Title" required/>
+
+                        <label for="description">Description :</label>
+                        <textarea class="form-control mb-2" id="description" name="description" type="text" placeholder="Enter Task Description" required></textarea>
+
+                        <label for="start_date_time">Start Date Time :</label>
+                        <div class="row mb-2">
+                            <div class="col-6 form-group">
+                                <input id="input_start_date" name="start_date" class="form-control" type="date" required/>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input id="input_start_time" name="start_time" class="form-control" type="time" required/>
+                            </div>
+                        </div>
+
+                        <label for="end_date_time">End Date Time :</label>
+                        <div class="row mb-2">
+                            <div class="col-6 form-group">
+                                <input id="input_end_date" name="end_date" class="form-control" type="date"/>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input id="input_end_time" name="end_time" class="form-control" type="time"/>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer px-3 p-2 pb-1">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" type="submit">Add Task</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+
+        <!-- Edit Task Pop Up -->
+        <div class="modal fade" id="div_edit_task_popup" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered .modal-sm">
+              <div class="modal-content">
+                <div class="modal-header px-3 p-2">
+                  <h5 class="modal-title">Edit Task</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-2 p-2">
+
+
+                    <form action="/update_task" method="post" class="form-control" enctype="multipart/form-data">
+
+                        <input id="input_id_update" name="id" type="hidden" required/>
+                        <input id="input_status_update" name="status" type="hidden" required/>
+
+
+                        <label for="task_title">Task Title :</label>
+                        <input class="form-control mb-2" id="input_task_title_update" name="task_title" type="text" placeholder="Enter Task Title" required/>
+
+                        <label for="description">Description :</label>
+                        <textarea class="form-control mb-2" id="input_description_update" name="description" type="text" placeholder="Enter Task Description" required></textarea>
+
+                        <label for="start_date_time">Start Date Time :</label>
+                        <div class="row mb-2">
+                            <div class="col-6 form-group">
+                                <input id="input_start_date_update" name="start_date" class="form-control" type="date" required/>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input id="input_start_time_update" name="start_time" class="form-control" type="time" required/>
+                            </div>
+                        </div>
+
+                        <label for="end_date_time">End Date Time :</label>
+                        <div class="row mb-2">
+                            <div class="col-6 form-group">
+                                <input id="input_end_date_update" name="end_date" class="form-control" type="date"/>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input id="input_end_time_update" name="end_time" class="form-control" type="time"/>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer px-3 p-2 pb-1">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" type="submit">Update Task</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+
+        <!-- Toast Notification -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+
+            <div id="task_list_task_mark_toast" class="toast border-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                      <span class="text-success">Task Marked As Completed</span>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+            </div>
+
+            <div id="task_list_task_mark_active_toast" class="toast border-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                      <span class="text-success">Task Marked As Active</span>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+            </div>
+
+            <div id="task_list_task_delete_toast" class="toast border-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                      <span class="text-success">Task Deleted</span>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+            </div>
+
+            <div id="list_loaded" class="toast border-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                      <span class="text-success">Task List Loaded Successfully</span>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+            </div>
+
+            <div id="toast_failed" class="toast border-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                      <span class="text-danger">Failed</span>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+        <div id="div_tab_container" class="div_tab_container" data-current-tab="">
+
+            <div id="div_tab_profile" class="div_tab_profile div_tab" data-tab-ui-state="null">
+
+            </div>
+
+            <div id="div_tab_profile_edit" class="div_tab_profile_edit div_tab" data-tab-ui-state="null">
+
+            </div>
+
+            <div id="div_tab_task_list" class="div_tab_task_list div_tab" data-tab-ui-state="null">
+
+                <div id="div_task_list_head_btn_strip" class="div_task_list_head_btn_strip">
+                    <div id="div_task_list_head" class="div_task_list_head">
+                        <span id="spn_task_list_head" class="spn_task_list_head">Task List</span>
+                    </div>
+
+                    <div id="div_task_list_tab_search_bar_container" class="div_tab_search_bar_container">
+                        <div class="input-group input-group-sm">
+                            <input id="input_search_from_task_list" type="text" class="form-control" placeholder="Search From List" aria-label="Search From List" aria-describedby="btn_search_from_history">
+                            <button class="btn btn-outline-secondary" type="button" id="btn_search_from_task_list">
+                                <div class="div_input_btn1_icon_cont"><svg class="icon_svg"><use xlink:href="#icon-search"></use></svg></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="div_task_list_btns" class="div_task_list_btns">
+
+                        <div id="div_sort_task_list_tab" class="div_sort_select_container">
+
+                            <select id="select_sort_task_list" class="form-select form-select-sm" aria-label="Sort From Task List" title="Sort Task List">
+                                <option selected disabled>Sort</option>
+                                <option value="title_asc">Title ASC</option>
+                                <option value="title_desc">Title DESC</option>
+                                <option value="date_asc">Date ASC</option>
+                                <option value="date_desc">Date DESC</option>
+
+                            </select>
+
+                        </div>
+
+                        <div id="div_add_task_btn" class="div_add_task_btn">
+                            <button id="btn_add_new_task" class="btn btn_icon2 bg_clr_light_green crl_white brdr_1px btn-sm btn-outline-success" title="Add Task" data-bs-toggle="modal" data-bs-target="#div_add_task_popup">
+                                <div class="div_btn_icon2_cont">
+                                    <svg class="icon_svg" data-ignore-day-theme="true">
+                                        <use xlink:href="#icon-plus"></use>
+                                    </svg>
+                                    <span class="btn_icon2_sp_text">Add Task</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="div_task_list_tab_body" class="div_task_list_tab_body">
+                    <div id="div_task_list_tb_container" class="div_task_list_tb_container table-responsive">
+
+                        <table class="table">
+                            <thead id="thead_task_list_tb" class="thead_task_list_tb">
+                                <tr>
+                                    <th class="td_right_border">#</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                    <!-- <th>End date</th>
+                                    <th>End time</th> -->
+                                    <th class="td_left_border">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbody_task_list_tb" class="tbody_task_list_tb">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="div_tab_history" class="div_tab_history div_tab" data-tab-ui-state="null">
+
+                <div id="div_task_list_history_head_btn_strip" class="div_task_list_head_btn_strip">
+                    <div id="div_task_list_head" class="div_task_list_head">
+                        <span id="spn_task_list_head" class="spn_task_list_head">History</span>
+                    </div>
+
+                    <div id="div_history_tab_search_bar_container" class="div_tab_search_bar_container">
+                        <div class="input-group input-group-sm">
+                            <input id="input_search_from_history" type="text" class="form-control" placeholder="Search From List" aria-label="Search From List" aria-describedby="btn_search_from_history">
+                            <button class="btn btn-outline-secondary" type="button" id="btn_search_from_history">
+                                <div class="div_input_btn1_icon_cont"><svg class="icon_svg"><use xlink:href="#icon-search"></use></svg></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="div_task_list_btns" class="div_task_list_btns">
+
+                        <div id="div_sort_history_tab" class="div_sort_select_container">
+
+                            <select id="select_sort_history" class="form-select form-select-sm" aria-label="Sort From History" title="Sort History">
+                                <option selected disabled>Sort</option>
+                                <option value="title_asc">Title ASC</option>
+                                <option value="title_desc">Title DESC</option>
+                                <option value="date_asc">Date ASC</option>
+                                <option value="date_desc">Date DESC</option>
+
+                            </select>
+
+                        </div>
+
+                        <div id="div_add_task_btn" class="div_add_task_btn">
+                            <button id="btn_add_new_task" class="btn btn_icon2 bg_clr_light_green crl_white brdr_1px btn-sm btn-outline-success" title="Add Task" data-bs-toggle="modal" data-bs-target="#div_add_task_popup">
+                                <div class="div_btn_icon2_cont">
+                                    <svg class="icon_svg" data-ignore-day-theme="true">
+                                        <use xlink:href="#icon-plus"></use>
+                                    </svg>
+                                    <span class="btn_icon2_sp_text">Add Task</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="div_task_list_tab_body" class="div_task_list_tab_body">
+                    <div id="div_task_list_tb_container" class="div_task_list_tb_container table-responsive">
+
+                        <table class="table">
+                            <thead id="thead_task_history_list_tb" class="thead_task_list_tb">
+                                <tr>
+                                    <th class="td_right_border">#</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Time</th>
+                                    <th>Date</th>
+                                    <!-- <th>End date</th>
+                                    <th>End time</th> -->
+                                    <th class="td_left_border">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbody_task_history_list_tb" class="tbody_task_list_tb">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+    </body>
+
+
+
+
+
+
+
+
+
+
+
+</html>
